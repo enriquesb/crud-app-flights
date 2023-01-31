@@ -4,13 +4,18 @@
   "description": "Web App to display information about a set of flights stored in a database.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "author": "Enrique SB",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
     "express": "^4.18.2",
     "mysql2": "^3.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
