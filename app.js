@@ -8,9 +8,14 @@ const connection = mysql.createConnection(process.env.DATABASE_URL);
 connection.connect();
 
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.render("index", { foo: "FOO" });
+});
+
+app.get("/new_flight", (req, res) => {
+  res.render("new", { foo: "FOO" });
 });
 
 app.get("/rows", (req, res) => {
