@@ -11,7 +11,12 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.render("index", { foo: "FOO" });
+  connection.query("SELECT * FROM flights", function (err, rows, fields) {
+    if (err) throw err;
+    res.render("index", { dbValues: rows });
+    //console.log(rows[0].departure);
+    //console.log(typeof rows);
+  });
 });
 
 app.get("/new_flight", (req, res) => {
@@ -23,6 +28,8 @@ app.get("/rows", (req, res) => {
     if (err) throw err;
 
     res.send(rows);
+    console.log(rows[0].departure);
+    console.log(typeof rows);
   });
 });
 
