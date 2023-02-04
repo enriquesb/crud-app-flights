@@ -1,3 +1,7 @@
 .main-div {
   margin-top: 90px;
 }
+
+.table-button {
+  display: inline;
+}

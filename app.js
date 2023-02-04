@@ -20,8 +20,9 @@ app.get("/", (req, res) => {
 });
 
 app.post("/new_flight", (req, res) => {
-  console.log(req.body);
-  sql = `INSERT INTO flights (origin, destination, price, airline, departure_date)VALUES ("${req.body.origin}", "${req.body.destination}", ${req.body.price}, "${req.body.airline}", "${req.body.date}");`;
+  sql = `INSERT INTO flights (origin, destination, price, airline, departure_date)VALUES
+        ("${req.body.origin}", "${req.body.destination}", ${req.body.price}, "${req.body.airline}", 
+        "${req.body.date}");`;
   //console.log(sql);
   connection.query(sql, function (err, rows, fields) {
     if (err) throw err;
@@ -31,6 +32,15 @@ app.post("/new_flight", (req, res) => {
 
 app.get("/new_flight", (req, res) => {
   res.render("new", { foo: "FOO" });
+});
+
+app.post("/delete", (req, res) => {
+  console.log(req.body.id2delete);
+  sql = `DELETE FROM flights WHERE id="${req.body.id2delete}";`;
+  connection.query(sql, function (err, rows, fields) {
+    if (err) throw err;
+    res.redirect("/");
+  });
 });
 
 app.get("/rows", (req, res) => {
