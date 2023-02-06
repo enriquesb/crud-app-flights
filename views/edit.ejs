@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="css/styles.css" />
 
-    <title>New flight</title>
+    <title>Edit flight</title>
   </head>
   <body>
     <main class="main-div">
@@ -20,12 +20,17 @@
         <div class="row">
           <div class="col-2"></div>
           <div class="col-8">
-            <h2>Add New Flight</h2>
-            <form action="/new_flight" method="post">
+            <h2>Edit Flight</h2>
+            <form action="/editing" method="post">
               <div class="row">
                 <div class="col">
                   <label>Origin:</label><br />
-                  <input type="text" class="form-control" name="origin" /><br />
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="origin"
+                    value="<%= row.origin %>"
+                  /><br />
                 </div>
                 <div class="col">
                   <label>Destiny:</label><br />
@@ -33,6 +38,7 @@
                     type="text"
                     class="form-control"
                     name="destination"
+                    value="<%= row.destination %>"
                   /><br />
                 </div>
               </div>
@@ -46,6 +52,7 @@
                       type="number"
                       class="form-control"
                       name="price"
+                      value="<%= row.price %>"
                     /><br />
                   </div>
                 </div>
@@ -53,8 +60,17 @@
                   <label>Airline:</label><br />
                   <select name="airline" class="form-select" required>
                     <option value="">--Choose an airline--</option>
-                    <option value="Alpha Airlines">Alpha Airlines</option>
+                    <% if( row.airline == "Alpha Airlines") { %>
+                    <option value="Alpha Airlines" selected>
+                      Alpha Airlines
+                    </option>
                     <option value="Omega Airlines">Omega Airlines</option>
+                    <% } else { %>
+                    <option value="Alpha Airlines">Alpha Airlines</option>
+                    <option value="Omega Airlines" selected>
+                      Omega Airline
+                    </option>
+                    <% }; %>
                   </select>
                   <br />
                 </div>
@@ -62,15 +78,21 @@
               <div class="row">
                 <div class="col">
                   <label>Date:</label><br />
-                  <input type="date" class="form-control" name="date" /><br />
+                  <input
+                    type="date"
+                    class="form-control"
+                    name="date"
+                    value="<%= row.departure_date %>"
+                  /><br />
                 </div>
                 <div class="col d-flex align-items-center">
                   <input
                     type="submit"
                     class="btn btn-success"
-                    value="Add flight"
+                    value="Confirm"
                   />
                 </div>
+                <input type="hidden" name="id2edit" value="<%= row.id %> " />
               </div>
             </form>
           </div>

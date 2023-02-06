@@ -50,10 +50,12 @@
                     <td><%=row.airline%></td>
                     <td><%=row.departure_date%></td>
                     <td>
-                        <button type="button" class="btn btn-primary table-button"><i class="fa-regular fa-pen-to-square"></i></button>
-                        <form action="/delete" method="post" class="table-button">
-                          <button type="submit" class="btn btn-danger table-button" name="id2delete" value="<%=row.id%>"><i class="fa-solid fa-trash"></i></button>
-                        </form>
+                      <form action="/edit" method="post" class="table-button">
+                        <button type="submit" class="btn btn-primary table-button" name="id2edit" value="<%=row.id%>"><i class="fa-regular fa-pen-to-square"></i></button>
+                      </form>
+                      <form action="/delete" method="post" class="table-button">
+                        <button type="submit" class="btn btn-danger table-button" name="id2delete" value="<%=row.id%>"><i class="fa-solid fa-trash"></i></button>
+                      </form>
                       </div>
                     </td>
                   </tr>

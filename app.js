@@ -31,7 +31,7 @@ app.post("/new_flight", (req, res) => {
 });
 
 app.get("/new_flight", (req, res) => {
-  res.render("new", { foo: "FOO" });
+  res.render("new");
 });
 
 app.post("/delete", (req, res) => {
@@ -43,14 +43,44 @@ app.post("/delete", (req, res) => {
   });
 });
 
-app.get("/rows", (req, res) => {
-  connection.query("SELECT * FROM flights", function (err, rows, fields) {
+app.post("/edit", (req, res) => {
+  id2edit = req.body.id2edit;
+  sql = `SELECT * FROM flights WHERE id="${id2edit}";`;
+  connection.query(sql, function (err, rows, fields) {
     if (err) throw err;
-
-    res.send(rows);
-    console.log(rows[0].departure);
-    console.log(typeof rows);
+    rows[0].id = id2edit;
+    res.render("edit", { row: rows[0] });
   });
+});
+
+app.post("/editing", (req, res) => {
+  console.log(req.body);
+  sql = `UPDATE flights SET
+        origin = "${req.body.origin}",
+        destination = "${req.body.destination}",
+        price = ${req.body.price},
+        airline = "${req.body.airline}",
+        departure_date = "${req.body.date}"
+   WHERE id="${req.body.id2edit}";`;
+  //console.log(sql);
+  connection.query(sql, function (err, rows, fields) {
+    if (err) throw err;
+    //rows[0].id = id2edit;
+    res.redirect("/");
+  });
+});
+
+app.get("/rows", (req, res) => {
+  connection.query(
+    "SELECT * FROM flights WHERE id = 1;",
+    function (err, rows, fields) {
+      if (err) throw err;
+
+      res.send(rows);
+      console.log(rows[0].departure);
+      console.log(typeof rows);
+    }
+  );
 });
 
 app.listen(port, () => {
