@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
+const fs = require("fs");
 
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 connection.connect();
@@ -31,7 +32,10 @@ app.post("/new_flight", (req, res) => {
 });
 
 app.get("/new_flight", (req, res) => {
-  res.render("new");
+  let rawCountries = fs.readFileSync("countries.json");
+  let countries = JSON.parse(rawCountries);
+  console.log(countries[0]);
+  res.render("new", { countries: countries });
 });
 
 app.post("/delete", (req, res) => {
@@ -70,17 +74,12 @@ app.post("/editing", (req, res) => {
   });
 });
 
-app.get("/rows", (req, res) => {
-  connection.query(
-    "SELECT * FROM flights WHERE id = 1;",
-    function (err, rows, fields) {
-      if (err) throw err;
-
-      res.send(rows);
-      console.log(rows[0].departure);
-      console.log(typeof rows);
-    }
-  );
+app.get("/countries", (req, res) => {
+  let rawCountries = fs.readFileSync("countries.json");
+  let countries = JSON.parse(rawCountries);
+  //res.send(rawdata);
+  console.log(countries[0]);
+  res.render("countriesDatalist", { countries: countries });
 });
 
 app.listen(port, () => {
