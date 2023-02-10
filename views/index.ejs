@@ -30,41 +30,7 @@
               </div>
             </div>
 
-            <table class="table table-hover align-middle">
-              <thead>
-                <tr>
-                <th>Origin</th>
-                <th>Destination</th>
-                <th>Price</th>
-                <th>Airline</th>
-                <th>Date</th>
-                <th>Edit/Delete</th>
-              </tr>
-              </thead>
-              <tbody class="table-group-divider">
-                <% dbValues.forEach((row) => { %>
-                  <tr>
-                    <td><%=row.origin%></td>
-                    <td><%=row.destination%></td>
-                    <td><%=row.price%></td>
-                    <td><%=row.airline%></td>
-                    <td><%=row.departure_date%></td>
-                    <td>
-                      <form action="/edit" method="post" class="table-button">
-                        <button type="submit" class="btn btn-primary table-button" name="id2edit" value="<%=row.id%>"><i class="fa-regular fa-pen-to-square"></i></button>
-                      </form>
-                      <form action="/delete" method="post" class="table-button">
-                        <button type="submit" class="btn btn-danger table-button" name="id2delete" value="<%=row.id%>"><i class="fa-solid fa-trash"></i></button>
-                      </form>
-                      </div>
-                    </td>
-                  </tr>
-                <% }); %>
-              </tbody>
-              
-              
-              </tr>
-            </table>
+            <%- include('partials/table'); %>
           </div>
           <div class="col-2"></div>
         </div>
