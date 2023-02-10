@@ -9,6 +9,9 @@ const fs = require("fs");
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 connection.connect();
 
+const rawCountries = fs.readFileSync("public/countries.json");
+const countries = JSON.parse(rawCountries);
+
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,9 +35,6 @@ app.post("/new_flight", (req, res) => {
 });
 
 app.get("/new_flight", (req, res) => {
-  let rawCountries = fs.readFileSync("countries.json");
-  let countries = JSON.parse(rawCountries);
-  console.log(countries[0]);
   res.render("new", { countries: countries });
 });
 
@@ -53,7 +53,7 @@ app.post("/edit", (req, res) => {
   connection.query(sql, function (err, rows, fields) {
     if (err) throw err;
     rows[0].id = id2edit;
-    res.render("edit", { row: rows[0] });
+    res.render("edit", { row: rows[0], countries: countries });
   });
 });
 
