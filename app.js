@@ -27,7 +27,6 @@ app.post("/new_flight", (req, res) => {
   sql = `INSERT INTO flights (origin, destination, price, airline, departure_date)VALUES
         ("${req.body.origin}", "${req.body.destination}", ${req.body.price}, "${req.body.airline}", 
         "${req.body.date}");`;
-  //console.log(sql);
   connection.query(sql, function (err, rows, fields) {
     if (err) throw err;
     res.redirect("/");
@@ -39,7 +38,6 @@ app.get("/new_flight", (req, res) => {
 });
 
 app.post("/delete", (req, res) => {
-  console.log(req.body.id2delete);
   sql = `DELETE FROM flights WHERE id="${req.body.id2delete}";`;
   connection.query(sql, function (err, rows, fields) {
     if (err) throw err;
@@ -65,21 +63,21 @@ app.post("/editing", (req, res) => {
         price = ${req.body.price},
         airline = "${req.body.airline}",
         departure_date = "${req.body.date}"
-   WHERE id="${req.body.id2edit}";`;
-  //console.log(sql);
+         WHERE id="${req.body.id2edit}";`;
   connection.query(sql, function (err, rows, fields) {
     if (err) throw err;
-    //rows[0].id = id2edit;
     res.redirect("/");
   });
 });
 
-app.get("/countries", (req, res) => {
-  let rawCountries = fs.readFileSync("countries.json");
-  let countries = JSON.parse(rawCountries);
-  //res.send(rawdata);
-  console.log(countries[0]);
-  res.render("countriesDatalist", { countries: countries });
+app.post("/filtered", (req, res) => {
+  maxPrice = req.body.maxPrice;
+  sql = `SELECT * FROM flights
+        WHERE price <= ${maxPrice};`;
+  connection.query(sql, function (err, rows, fields) {
+    if (err) throw err;
+    res.render("filtered", { dbValues: rows, maxPrice: maxPrice });
+  });
 });
 
 app.listen(port, () => {

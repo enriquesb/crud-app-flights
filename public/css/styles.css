@@ -5,3 +5,7 @@
 .table-button {
   display: inline;
 }
+
+.no-flights {
+  text-align: center;
+}

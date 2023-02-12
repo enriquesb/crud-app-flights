@@ -23,14 +23,54 @@
 
             <div class="d-flex justify-content-between">
                 <div>
-                  <h1>Flights</h1>
+                  <h1>All Flights</h1>
                 </div>
                 <div class="d-flex align-items-center">
-                  <a type="button" class="btn btn-success" href="/new_flight">Add new flight</a>
+                  <a type="button" class="btn btn-success me-2" href="/new_flight">Add new flight</a>
+                  <a type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#filterModal" >Filter by price</a>
               </div>
             </div>
 
             <%- include('partials/table'); %>
+
+            <% if (Object.keys(dbValues).length == 0) { %>
+                <div class="no-flights">
+                    <p>No flights in database. Clic the "Add new flight" button.</p>
+                </div>
+            <% }; %>
+
+            <!-- Modal -->
+            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabel">Filter flights</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form action="/filtered" method="post">                  
+                    <div class="modal-body">
+                      <label>Insert maximum price:</label><br />
+                      <div class="input-group">
+                      <span class="input-group-text">$</span>
+                      <input
+                      type="number"
+                      class="form-control"
+                      name="maxPrice"
+                      min="1"
+                      max="9999"
+                      required
+                    /><br />
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <input type="submit" class="btn btn-primary" value="submit"></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
           </div>
           <div class="col-2"></div>
         </div>
