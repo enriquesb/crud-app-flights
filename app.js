@@ -6,6 +6,11 @@ const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 
+const supabase = require("@supabase/supabase-js");
+
+//import { createClient } from "@supabase/supabase-js";
+const supabaseClient = supabase.createClient("https://sjbxqqmzeluaqpnvktsl.supabase.co", process.env.SUPABASE_KEY);
+
 const connection = mysql.createConnection(process.env.DATABASE_URL);
 connection.connect();
 
@@ -16,21 +21,27 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  connection.query("SELECT * FROM flights", function (err, rows, fields) {
+app.get("/", async (req, res) => {
+  const { data, error } = await supabaseClient.from("flights").select();
+  console.log(data);
+  res.render("index", { dbValues: data });
+  /*
+    connection.query("SELECT * FROM flights", function (err, rows, fields) {
     if (err) throw err;
     res.render("index", { dbValues: rows });
   });
+  */
 });
 
-app.post("/new_flight", (req, res) => {
-  sql = `INSERT INTO flights (origin, destination, price, airline, departure_date)VALUES
-        ("${req.body.origin}", "${req.body.destination}", ${req.body.price}, "${req.body.airline}", 
-        "${req.body.date}");`;
-  connection.query(sql, function (err, rows, fields) {
-    if (err) throw err;
-    res.redirect("/");
+app.post("/new_flight", async (req, res) => {
+  const { error } = await supabaseClient.from("flights").insert({
+    origin: req.body.origin,
+    destination: req.body.destination,
+    price: req.body.price,
+    airline: req.body.airline,
+    departure_date: req.body.date,
   });
+  res.redirect("/");
 });
 
 app.get("/new_flight", (req, res) => {
