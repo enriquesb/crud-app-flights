@@ -8,7 +8,6 @@ const fs = require("fs");
 
 const supabase = require("@supabase/supabase-js");
 
-//import { createClient } from "@supabase/supabase-js";
 const supabaseClient = supabase.createClient("https://sjbxqqmzeluaqpnvktsl.supabase.co", process.env.SUPABASE_KEY);
 
 const connection = mysql.createConnection(process.env.DATABASE_URL);
@@ -23,7 +22,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
   const { data, error } = await supabaseClient.from("flights").select();
-  console.log(data);
   res.render("index", { dbValues: data });
 });
 
@@ -72,14 +70,9 @@ app.post("/editing", (req, res) => {
   });
 });
 
-app.post("/filtered", (req, res) => {
-  maxPrice = req.body.maxPrice;
-  sql = `SELECT * FROM flights
-        WHERE price <= ${maxPrice};`;
-  connection.query(sql, function (err, rows, fields) {
-    if (err) throw err;
-    res.render("filtered", { dbValues: rows, maxPrice: maxPrice });
-  });
+app.post("/filtered", async (req, res) => {
+  const { data, error } = await supabaseClient.from("flights").select().lt("price", req.body.maxPrice);
+  res.render("filtered", { dbValues: data, maxPrice: req.body.maxPrice });
 });
 
 app.listen(port, () => {
