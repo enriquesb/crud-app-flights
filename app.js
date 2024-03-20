@@ -45,29 +45,24 @@ app.post("/delete", async (req, res) => {
   res.redirect("/");
 });
 
-app.post("/edit", (req, res) => {
+app.post("/edit", async (req, res) => {
   id2edit = req.body.id2edit;
-  sql = `SELECT * FROM flights WHERE id="${id2edit}";`;
-  connection.query(sql, function (err, rows, fields) {
-    if (err) throw err;
-    rows[0].id = id2edit;
-    res.render("edit", { row: rows[0], countries: countries });
-  });
+  const { data, error } = await supabaseClient.from("flights").select().eq("id", id2edit);
+  res.render("edit", { row: data[0], countries: countries });
 });
 
-app.post("/editing", (req, res) => {
-  console.log(req.body);
-  sql = `UPDATE flights SET
-        origin = "${req.body.origin}",
-        destination = "${req.body.destination}",
-        price = ${req.body.price},
-        airline = "${req.body.airline}",
-        departure_date = "${req.body.date}"
-         WHERE id="${req.body.id2edit}";`;
-  connection.query(sql, function (err, rows, fields) {
-    if (err) throw err;
-    res.redirect("/");
-  });
+app.post("/editing", async (req, res) => {
+  const { error } = await supabaseClient
+    .from("flights")
+    .update({
+      origin: req.body.origin,
+      destination: req.body.destination,
+      price: req.body.price,
+      airline: req.body.airline,
+      departure_date: req.body.date,
+    })
+    .eq("id", req.body.id2edit);
+  res.redirect("/");
 });
 
 app.post("/filtered", async (req, res) => {
