@@ -25,12 +25,6 @@ app.get("/", async (req, res) => {
   const { data, error } = await supabaseClient.from("flights").select();
   console.log(data);
   res.render("index", { dbValues: data });
-  /*
-    connection.query("SELECT * FROM flights", function (err, rows, fields) {
-    if (err) throw err;
-    res.render("index", { dbValues: rows });
-  });
-  */
 });
 
 app.post("/new_flight", async (req, res) => {
@@ -48,12 +42,9 @@ app.get("/new_flight", (req, res) => {
   res.render("new", { countries: countries });
 });
 
-app.post("/delete", (req, res) => {
-  sql = `DELETE FROM flights WHERE id="${req.body.id2delete}";`;
-  connection.query(sql, function (err, rows, fields) {
-    if (err) throw err;
-    res.redirect("/");
-  });
+app.post("/delete", async (req, res) => {
+  const { error } = await supabaseClient.from("flights").delete().eq("id", req.body.id2delete);
+  res.redirect("/");
 });
 
 app.post("/edit", (req, res) => {
