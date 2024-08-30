@@ -10,9 +10,6 @@ const supabase = require("@supabase/supabase-js");
 
 const supabaseClient = supabase.createClient("https://sjbxqqmzeluaqpnvktsl.supabase.co", process.env.SUPABASE_KEY);
 
-const connection = mysql.createConnection(process.env.DATABASE_URL);
-connection.connect();
-
 const rawCountries = fs.readFileSync("public/countries.json");
 const countries = JSON.parse(rawCountries);
 
