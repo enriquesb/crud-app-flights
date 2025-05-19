@@ -8,7 +8,8 @@ const fs = require("fs");
 
 const supabase = require("@supabase/supabase-js");
 
-const supabaseClient = supabase.createClient("https://sjbxqqmzeluaqpnvktsl.supabase.co", process.env.SUPABASE_KEY);
+const supabaseClient = supabase.createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+
 
 const rawCountries = fs.readFileSync("public/countries.json");
 const countries = JSON.parse(rawCountries);
